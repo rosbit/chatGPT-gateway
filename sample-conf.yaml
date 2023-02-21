@@ -1,0 +1,21 @@
+---
+listen-host: ""
+listen-port: 7080
+api-base-url: https://api.openai.com
+default-timeout: 30s
+apps:
+  - name: name-of-chatGPT-account
+    api-key: api-key
+    text:
+      model: text-davinci-003
+      temperature: 0
+      max-tokens: 1024
+    image:
+      size: 1024x1024
+      num: 1
+      response-format: url
+  #-
+common-endpoints:
+  health-check: "/health"
+  chat: "/chat"
+  image: "/image"
