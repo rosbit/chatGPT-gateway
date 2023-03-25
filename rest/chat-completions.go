@@ -6,13 +6,14 @@ import (
 	"net/http"
 )
 
-// POST /chat?app=xxx
+// POST /chat-completions?app=xxx
 // {
+//    "role": "user",
 //    "prompt": "xxxx",
 //    "model": "xxx",
 //    "max-tokens": xxx
 // }
-func Chat(c *mgin.Context) {
+func ChatCompletions(c *mgin.Context) {
 	var params struct {
 		App string `query:"app"`
 	}
@@ -21,6 +22,7 @@ func Chat(c *mgin.Context) {
 		return
 	}
 	var promptParams struct {
+		Role string `json:"role"`
 		Prompt string `json:"prompt"`
 		Model  string `json:"model"`
 		MaxTokens uint16 `json:"max-tokens"`
@@ -29,7 +31,7 @@ func Chat(c *mgin.Context) {
 		c.Error(code, err.Error())
 		return
 	}
-	res, err := chatgpt.CreateComplection(params.App, promptParams.Prompt, promptParams.Model, promptParams.MaxTokens)
+	res, err := chatgpt.CreateChatComplection(params.App, promptParams.Role, promptParams.Prompt, promptParams.Model, promptParams.MaxTokens)
 	if err != nil {
 		var status int
 		if chatgpt.IsTimeoutError(err) {

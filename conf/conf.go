@@ -16,6 +16,11 @@
 //       model: text-davinci-003
 //       temperature: 0
 //       max-tokens: 128
+//     chat-completions:
+//       role: user
+//       model: gpt-3.5-turbo
+//       temperature: 0
+//       max-tokens: 128
 //     image:
 //       size: 1024x1024
 //       num: 1
@@ -24,6 +29,7 @@
 // common-endpoints:
 //   health-check: "/health"
 //   chat: "/chat"
+//   chat-completions: "/chat-completions"
 //   image: "/image"
 //
 // Rosbit Xu
@@ -47,6 +53,7 @@ type ServiceConfT struct {
 	CommonEndpoints struct {
 		HealthCheck string `yaml:"health-check"`
 		Chat  string `yaml:"chat"`
+		ChatCompletions string `yaml:"chat-completions"`
 		Image string `yaml:"image"`
 	} `yaml:"common-endpoints"`
 }

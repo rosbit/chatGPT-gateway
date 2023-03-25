@@ -30,6 +30,7 @@ func StartService() error {
 	})
 	api.POST(ce.Chat, rest.Chat)
 	api.POST(ce.Image, rest.CreateImage)
+	api.POST(ce.ChatCompletions, rest.ChatCompletions)
 
 	listenParam := fmt.Sprintf("%s:%d", serviceConf.ListenHost, serviceConf.ListenPort)
 	log.Printf("I am listening at %s...\n", listenParam)
