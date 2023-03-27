@@ -23,8 +23,9 @@ func CreateImage(appName string, prompt string, size string, n uint8) (created i
 	}
 	body := appConf.Image.MakeParams(prompt, n, size)
 	var imgRes imageResult
-	cgErr, err := callChatGPT(appConf, "/v1/images/generations", body, &imgRes)
-	if err != nil {
+	cgErr, e := callChatGPT(appConf, "/v1/images/generations", body, &imgRes)
+	if e != nil {
+		err = e
 		return
 	}
 	if cgErr != nil {

@@ -41,7 +41,9 @@ func callChatGPT(appConf *conf.AppParams, uri string, body interface{}, res chat
 	}
 
 	var gptErr chatgptError
-	err = json.Unmarshal(resBody, &gptErr)
+	if err = json.Unmarshal(resBody, &gptErr); err == nil {
+		cgerr = &gptErr
+	}
 	return
 }
 
