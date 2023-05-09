@@ -110,6 +110,47 @@ func (p *ChatCompletionsParams) MakeParams(role, prompt, model string, maxTokens
 	}
 }
 
+var roles = []string{"user", "assistant"}
+func (p *ChatCompletionsParams) MakeContextParams(model string, maxTokens uint16, systemRole string, messages []string) map[string]interface{} {
+	if len(model) == 0 {
+		model = p.Model
+	}
+	if maxTokens == 0 {
+		maxTokens = p.MaxTokens
+	}
+	return map[string]interface{}{
+		"model": model,
+		"messages": func() []interface{} {
+			count := len(messages)
+			if len(systemRole) > 0 {
+				count += 1
+			}
+
+			res := make([]interface{}, count)
+			i := 0
+			if len(systemRole) > 0 {
+				res[i] = map[string]interface{}{
+					"role": "system",
+					"content": systemRole,
+				}
+				i += 1
+			}
+
+			roleIdx := 0
+			for _, message := range messages {
+				res[i] = map[string]interface{}{
+					"role": roles[roleIdx],
+					"content": message,
+				}
+				i, roleIdx = i+1, 1-roleIdx
+			}
+			return res
+		}(),
+		"temperature": p.Temperature,
+		"max_tokens": maxTokens,
+	}
+}
+
 type ImageParams struct {
 	Size string `yaml:"size"`
 	Num  uint8 `yaml:"num"`

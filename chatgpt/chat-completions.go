@@ -64,3 +64,25 @@ func CreateChatComplection(appName string, role, prompt, model string, maxTokens
 	res = textRes.String()
 	return
 }
+
+func ContextChat(appName string, model string, maxTokens uint16, systemRole string, messages []string) (res string, err error) {
+	appConf := conf.GetAppConf(appName)
+	if appConf == nil {
+		err = fmt.Errorf("no conf found for %s", appName)
+		return
+	}
+	body := appConf.ChatCompletions.MakeContextParams(model, maxTokens, systemRole, messages)
+	var textRes chatCompletionsResult
+	cgErr, e := callChatGPT(appConf, "/v1/chat/completions", body, &textRes)
+	if e != nil {
+		res = e.Error()
+		err = e
+		return
+	}
+	if cgErr != nil {
+		res = cgErr.Error.Message
+		return
+	}
+	res = textRes.String()
+	return
+}

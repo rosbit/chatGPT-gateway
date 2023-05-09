@@ -30,6 +30,7 @@
 //   health-check: "/health"
 //   chat: "/chat"
 //   chat-completions: "/chat-completions"
+//   context-chat: "/context-chat"
 //   image: "/image"
 //
 // Rosbit Xu
@@ -55,6 +56,7 @@ type ServiceConfT struct {
 		Chat  string `yaml:"chat"`
 		ChatCompletions string `yaml:"chat-completions"`
 		Image string `yaml:"image"`
+		ContextChat string `yaml:"context-chat"`
 	} `yaml:"common-endpoints"`
 }
 
@@ -149,8 +151,14 @@ func checkMust(confFile string) error {
 	if len(ce.Chat) == 0 {
 		return fmt.Errorf("common-endpoints/chat expected in conf")
 	}
+	if len(ce.ChatCompletions) == 0 {
+		return fmt.Errorf("common-endpoints/chat-completions expected in conf")
+	}
 	if len(ce.Image) == 0 {
 		return fmt.Errorf("common-endpoints/image expected in conf")
+	}
+	if len(ce.ContextChat) == 0 {
+		return fmt.Errorf("common-endpoints/context-chat expected in conf")
 	}
 
 	return nil
